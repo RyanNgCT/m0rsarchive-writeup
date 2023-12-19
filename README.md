@@ -18,7 +18,7 @@ $ python solve.py
 
 ![layer_1](./assets/layer_1.png)
 
-Inspecting the image, I found that it resembled some pattern and then thought about the name of the challenge. It's name was also `pwd.png`, suggesting that it could be some form of password to extract the zip file (since unzipping the zip file without a password failed).
+Inspecting the image, I found that it resembled some pattern and then thought about the name of the challenge. It's name was also `pwd.png`, suggesting that it could be some form of password to extract the zip file (and unzipping the zip file without a password failed).
 
 ![morse like](./assets/morse_like.png)
 
@@ -42,7 +42,7 @@ background_color = pixel_data[0,0]
 ...
 ```
 
-So instead of using `argv[1]` a.k.a. file name of the target image to be decoded to text (archive password), I used an input field.
+So instead of using `argv[1]` a.k.a. file name of the target image to be decoded to text (archive password), I used an input field as a POC. I later changed this to be supplied as an argument when using `decodeMorse` in `solve.py`.
 
 Thereafter, I proceeded to write [an initial version of solve.py](./initial_solve.py) which calls the `decodeMorse` function in the helper `mocr.py`. The main purpose of `mocr.py` is to decode the image and return the "password" to `solve.py`, which does the actual extracting of each layer/level of archive.
 
@@ -84,7 +84,7 @@ from mocr import decodeMorse
 
 def extract_files(level):
     while True:
-        dir_path = 'flag/' * (level != 999) # exclude the dir_path only on first layer
+        dir_path = 'flag/' * (level != 999) # exclude the dir_path concat only on the first layer (999.zip)
         img_path = f"{dir_path}pwd.png"  # Set the image file path based on the level
 
         file_path = f"{dir_path}flag_{level}.zip"
@@ -107,7 +107,7 @@ def extract_files(level):
                 break  # Break the loop if extraction fails
 ```
 
-And thereafter, I was able to find and read the contents of the flag file and so I included a printing functionality to the script too.
+Thereafter, I was able to find and read the contents of the flag file (after the script completed) and so I included a printing functionality to the script to print the resultant flag, as shown below.
 
 ![flag](./assets/flag.png)
 
@@ -117,6 +117,10 @@ if os.path.isfile(flag_file):
     with open(flag_file, 'r') as f:
         print(f"\nTHE FLAG IS: {f.read()}")
 ```
+
+Here is how the terminal now looks like when the script terminates.
+
+![term-out](./assets/term-out.png)
 
 ## Credits
 [@eauxfolles](https://github.com/eauxfolles)

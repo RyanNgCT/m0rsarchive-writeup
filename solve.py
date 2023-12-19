@@ -2,7 +2,7 @@ from mocr import decodeMorse
 import os
 import zipfile
 
-def extract_files(level):
+def extract_files(level, image_file):
     while True:
         dir_path = 'flag/' * (level != 999)
         img_path = f"{dir_path}pwd.png"  # Set the image file path based on the level
